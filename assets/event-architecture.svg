@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520">
+  <defs>
+    <style>
+      .box { fill: #fffdf9; stroke: #2c2c2c; stroke-width: 2; rx: 16; }
+      .sub { fill: #f5f2ed; stroke: #2c2c2c; stroke-width: 2; rx: 16; }
+      .t1 { font: 600 22px Inter, Arial, sans-serif; fill: #2c2c2c; }
+      .t2 { font: 400 16px Inter, Arial, sans-serif; fill: #2c2c2c; }
+      .muted { font: 400 14px Inter, Arial, sans-serif; fill: #5a5a5a; }
+      .arrow { stroke: #2c2c2c; stroke-width: 2.5; fill: none; marker-end: url(#m); }
+    </style>
+    <marker id="m" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M0,0 L12,6 L0,12 Z" fill="#2c2c2c"/>
+    </marker>
+  </defs>
+
+  <text x="40" y="50" class="t1">Event Registration Service — Architecture (high level)</text>
+  <text x="40" y="82" class="muted">Node/Express API + MongoDB, deployed on AWS Lightsail with Nginx + PM2</text>
+
+  <rect x="60" y="160" width="260" height="140" class="box"/>
+  <text x="90" y="205" class="t1" font-size="20">Client</text>
+  <text x="90" y="235" class="t2">Browser / mobile</text>
+  <text x="90" y="262" class="muted">Signup + waitlist</text>
+
+  <rect x="380" y="160" width="260" height="140" class="sub"/>
+  <text x="410" y="205" class="t1" font-size="20">Nginx</text>
+  <text x="410" y="235" class="t2">Reverse proxy</text>
+  <text x="410" y="262" class="muted">Routes traffic to API</text>
+
+  <rect x="700" y="120" width="340" height="220" class="box"/>
+  <text x="730" y="170" class="t1" font-size="20">Node.js / Express API</text>
+  <text x="730" y="200" class="t2">Registrations + waitlist logic</text>
+  <text x="730" y="228" class="muted">Input validation + basic logs</text>
+
+  <rect x="740" y="250" width="300" height="70" class="sub"/>
+  <text x="770" y="292" class="t2">PM2 process manager</text>
+
+  <rect x="700" y="380" width="340" height="110" class="box"/>
+  <text x="730" y="428" class="t1" font-size="20">MongoDB</text>
+  <text x="730" y="456" class="t2">Persistent records</text>
+
+  <text x="60" y="350" class="muted">Hosting: AWS Lightsail (single VM)</text>
+
+  <path d="M320 230 L380 230" class="arrow"/>
+  <path d="M640 230 L700 230" class="arrow"/>
+  <path d="M870 340 L870 380" class="arrow"/>
+
+  <text x="60" y="410" class="muted">Notes:</text>
+  <text x="60" y="435" class="muted">• Health check endpoint + basic restart steps in runbook</text>
+  <text x="60" y="458" class="muted">• Backup/restore steps documented for quick recovery</text>
+</svg>

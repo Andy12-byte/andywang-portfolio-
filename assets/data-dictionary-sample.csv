@@ -1,0 +1,4 @@
+Metric,Definition,Formula,Source,Refresh,Owner,Quality checks
+Throughput,Volume moved through the system per time period,sum(volume) / period,fact_flow,Monthly,Analytics,No negative volume; totals reconcile to source
+Utilization,Percent of capacity used,throughput / capacity,fact_flow + dim_capacity,Monthly,Analytics,Utilization between 0–1; capacity not null
+Variance,Actual vs baseline difference,actual - baseline,fact_flow + baseline_table,Monthly,Analytics,Baseline exists for period; flag large swings
