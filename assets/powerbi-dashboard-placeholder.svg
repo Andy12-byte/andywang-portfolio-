@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#fffdf9"/>
+  <rect x="60" y="60" width="1080" height="580" rx="18" fill="#f8f6f3" stroke="#e0ddd8" stroke-width="2"/>
+  <text x="110" y="160" font-family="Inter, Arial, sans-serif" font-size="32" fill="#2c2c2c">Dashboard Screenshot Placeholder</text>
+  <text x="110" y="210" font-family="Inter, Arial, sans-serif" font-size="18" fill="#5a5a5a">Replace with: assets/powerbi-dashboard-blurred.png</text>
+  <rect x="110" y="260" width="980" height="300" rx="12" fill="#fffdf9" stroke="#e0ddd8"/>
+  <rect x="130" y="285" width="220" height="80" rx="10" fill="#f5f2ed" stroke="#e0ddd8"/>
+  <rect x="370" y="285" width="220" height="80" rx="10" fill="#f5f2ed" stroke="#e0ddd8"/>
+  <rect x="610" y="285" width="220" height="80" rx="10" fill="#f5f2ed" stroke="#e0ddd8"/>
+  <rect x="850" y="285" width="220" height="80" rx="10" fill="#f5f2ed" stroke="#e0ddd8"/>
+  <rect x="130" y="390" width="940" height="150" rx="12" fill="#f5f2ed" stroke="#e0ddd8"/>
+</svg>
