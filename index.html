@@ -718,7 +718,66 @@
                 display: none;
             }
         }
-    </style>
+    /* Case Studies */
+.case-study {
+    margin-top: 48px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: rgba(255, 253, 249, 0.7);
+}
+
+.case-study-header h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.case-study-grid {
+    margin-top: 18px;
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+}
+
+.case-list {
+    margin-left: 18px;
+    color: var(--text-light);
+}
+
+.case-list li { margin: 8px 0; }
+
+.case-media .media-card {
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--cream);
+}
+
+.case-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-top: 10px;
+    border: 1px solid var(--border);
+}
+
+.small-note {
+    font-size: 0.85rem;
+    color: var(--text-lighter);
+    margin-top: 6px;
+}
+
+.doc-links {
+    margin-left: 18px;
+    color: var(--text-light);
+}
+.doc-links li { margin: 8px 0; }
+.doc-links a { text-decoration: underline; }
+
+@media (max-width: 900px) {
+    .case-study-grid { grid-template-columns: 1fr; }
+}
+</style>
 </head>
 <body>
 
@@ -748,7 +807,8 @@
             <a href="#skills">Skills</a>
             <a href="#experience">Experience</a>
             <a href="#projects">Work</a>
-            <a href="#contact">Contact</a>
+                        <a href="#case-studies">Case Studies</a>
+<a href="#contact">Contact</a>
         </div>
     </nav>
 
@@ -921,7 +981,7 @@
                     </div>
                 </a>
 
-                <a href="#" class="project-card fade-in">
+                <a href="#event-registration" class="project-card fade-in">
                     <div class="project-top">
                         <span class="project-number">05</span>
                         <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
@@ -935,7 +995,7 @@
                     </div>
                 </a>
 
-                <a href="#" class="project-card fade-in">
+                <a href="#pipeline-flow-analysis" class="project-card fade-in">
                     <div class="project-top">
                         <span class="project-number">06</span>
                         <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
@@ -950,6 +1010,111 @@
                 </a>
             </div>
         </section>
+
+
+<!-- Case Studies & Documentation -->
+<section id="case-studies">
+    <div class="section-header fade-in">
+        <h2>Case Studies</h2>
+        <span>Reporting, documentation, and delivery</span>
+    </div>
+
+    <div class="case-study fade-in" id="pipeline-flow-analysis">
+        <div class="case-study-header">
+            <h3>Pipeline Flow Analysis (Student Project)</h3>
+            <p class="company">Python · SQL · Databricks · Power BI</p>
+        </div>
+
+        <div class="case-study-grid">
+            <div>
+                <p class="label">What it was</p>
+                <p>
+                    A throughput and constraint analysis project where the goal was to make performance questions easier to answer
+                    with consistent metrics and a repeatable reporting workflow.
+                </p>
+
+                <p class="label" style="margin-top: 18px;">What I did</p>
+                <ul class="case-list">
+                    <li>Defined a simple KPI set (throughput, available capacity, utilization) and kept definitions in a data dictionary.</li>
+                    <li>Aggregated monthly flows by key point (example shown: <strong>ex‑Gretna</strong>) and built a repeatable refresh workflow in Python/SQL.</li>
+                    <li>Produced a monthly scorecard (last 24 months) and a one‑page chart for quick stakeholder updates.</li>
+                    <li>Wrote lightweight runbook notes (inputs, outputs, and checks) so the reporting could be picked up by someone else.</li>
+                </ul>
+
+                <p class="label" style="margin-top: 18px;">Outcome</p>
+                <p>
+                    Reporting became more consistent and easier to review. The workflow reduced manual refresh steps and made it
+                    simpler to spot data issues and explain KPI movement.
+                </p>
+            </div>
+
+            <div class="case-media">
+                <div class="media-card">
+                    <p class="label">Public data snapshot</p>
+                    <p class="small-note">
+                        Chart built from <a href="assets/enbridge-mainline-throughput-and-capacity.csv" target="_blank">CER open data</a>
+                        for the Enbridge Canadian Mainline (key point: ex‑Gretna). Used here as a portfolio demo.
+                    </p>
+                    <img class="case-image" src="assets/enbridge_mainline_throughput_capacity.png" alt="Throughput vs capacity chart (CER open data)">
+                    <p class="small-note" style="margin-top: 10px;">
+                        Background photo (CC0): <a href="https://commons.wikimedia.org/wiki/File:Oil_pipeline.jpg" target="_blank">Wikimedia Commons</a>.
+                    </p>
+                    <img class="case-image" src="assets/oil_pipeline_photo.jpg" alt="Pipeline construction photo">
+                </div>
+
+                <div class="media-card" style="margin-top: 18px;">
+                    <p class="label">Reporting & documentation samples</p>
+                    <ul class="doc-links">
+                        <li><a href="assets/data-dictionary-sample.csv" target="_blank">Data dictionary sample (CSV)</a></li>
+                        <li><a href="assets/oil-pipeline-data-dictionary.csv" target="_blank">CER oil pipeline data dictionary (CSV)</a></li>
+                        <li><a href="assets/monthly-scorecard-example.csv" target="_blank">Monthly scorecard example (CSV)</a></li>
+                        <li><a href="assets/monthly-scorecard-template.xlsx" target="_blank">Monthly scorecard template (Excel)</a></li>
+                        <li><a href="assets/runbook-sample.md" target="_blank">Runbook / refresh steps (Markdown)</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="case-study fade-in" id="event-registration">
+        <div class="case-study-header">
+            <h3>Event Registration Service (Club Project)</h3>
+            <p class="company">Node.js · MongoDB · AWS Lightsail · Nginx · PM2</p>
+        </div>
+
+        <div class="case-study-grid">
+            <div>
+                <p class="label">What it was</p>
+                <p>
+                    A small service for event signups and waitlists used across multiple student events. The focus was reliability:
+                    no lost records, clear run steps, and quick recovery if something breaks.
+                </p>
+
+                <p class="label" style="margin-top: 18px;">What I did</p>
+                <ul class="case-list">
+                    <li>Built the API and database workflow for registrations and waitlists.</li>
+                    <li>Deployed on AWS Lightsail with Nginx and PM2.</li>
+                    <li>Wrote basic health checks and a short runbook so teammates could operate it without deep DevOps experience.</li>
+                </ul>
+
+                <p class="label" style="margin-top: 18px;">Outcome</p>
+                <p>
+                    Supported 1,200+ registrations with stable operation and clear handoff documentation.
+                </p>
+            </div>
+
+            <div class="case-media">
+                <div class="media-card">
+                    <p class="label">Docs</p>
+                    <ul class="doc-links">
+                        <li><a href="assets/runbook-sample.md" target="_blank">Runbook template (reuse)</a></li>
+                    </ul>
+                    <p class="small-note">Tip: add a short architecture diagram or screenshot later if you want.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
         <!-- Contact -->
         <section id="contact" class="contact-section">
