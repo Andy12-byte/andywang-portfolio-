@@ -21,6 +21,7 @@
             --text-lighter: #8a8a8a;
             --border: #e0ddd8;
             --cream: #fffdf9;
+            --glow-color: rgba(180, 160, 140, 0.8);
         }
 
         html {
@@ -223,6 +224,35 @@
             position: relative;
         }
 
+        /* Typing Effect Styles */
+        .typing-container {
+            margin-bottom: 24px;
+            min-height: 60px;
+        }
+
+        .typing-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 400;
+            color: var(--text);
+            display: inline-block;
+        }
+
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background: var(--text);
+            margin-left: 4px;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
         .hero-label {
             font-size: 0.8rem;
             color: var(--text-lighter);
@@ -244,6 +274,44 @@
 
         .hero h1 em {
             font-style: italic;
+        }
+
+        /* Scroll-driven text animation */
+        .scroll-text-wrapper {
+            overflow: hidden;
+        }
+
+        .scroll-text {
+            display: inline-block;
+            opacity: 0;
+            transform: translateX(-100px);
+            transition: opacity 0.8s ease, transform 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .scroll-text.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .scroll-text-right {
+            transform: translateX(100px);
+        }
+
+        .scroll-text-right.visible {
+            transform: translateX(0);
+        }
+
+        /* Staggered word animation */
+        .word-animate {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .word-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .hero-description {
@@ -342,11 +410,89 @@
             padding-bottom: 8px;
         }
 
-        /* Skills Grid */
+        /* Glowing Border Card */
+        .glow-card {
+            position: relative;
+            background: var(--cream);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .glow-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid var(--border);
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .glow-border {
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: transparent;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(180, 160, 140, 0.9) 0%, transparent 70%);
+            animation: glowMove 6s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glow-card:hover .glow-border::before {
+            opacity: 1;
+        }
+
+        @keyframes glowMove {
+            0% {
+                top: -100px;
+                left: -100px;
+            }
+            25% {
+                top: -100px;
+                left: calc(100% - 100px);
+            }
+            50% {
+                top: calc(100% - 100px);
+                left: calc(100% - 100px);
+            }
+            75% {
+                top: calc(100% - 100px);
+                left: -100px;
+            }
+            100% {
+                top: -100px;
+                left: -100px;
+            }
+        }
+
+        /* Skills Grid with Glow */
         .skills-container {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 48px 40px;
+            gap: 24px;
+        }
+
+        .skill-item {
+            padding: 32px;
+            position: relative;
+            z-index: 1;
         }
 
         .skill-item h3 {
@@ -424,7 +570,7 @@
             font-weight: 300;
         }
 
-        /* Projects */
+        /* Projects with Glow Border */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -433,33 +579,15 @@
 
         .project-card {
             padding: 40px;
-            background: var(--cream);
-            border: 1px solid var(--border);
             transition: all 0.4s ease;
             cursor: pointer;
             position: relative;
-            overflow: hidden;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(200, 190, 180, 0.05) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.4s;
+            z-index: 1;
         }
 
         .project-card:hover {
             transform: translateY(-4px);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
-        }
-
-        .project-card:hover::before {
-            opacity: 1;
         }
 
         .project-top {
@@ -518,6 +646,7 @@
             padding: 6px 14px;
             letter-spacing: 0.5px;
             font-weight: 400;
+            background: rgba(255,255,255,0.5);
         }
 
         /* Contact */
@@ -641,6 +770,128 @@
         .fade-in-delay-2 { transition-delay: 0.2s; }
         .fade-in-delay-3 { transition-delay: 0.3s; }
 
+        /* Horizontal scroll text */
+        .flow-text {
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .flow-left {
+            transform: translateX(-80px);
+        }
+
+        .flow-right {
+            transform: translateX(80px);
+        }
+
+        .flow-text.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Case Studies */
+        .case-study {
+            margin-top: 48px;
+            padding: 32px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .case-study-header h3 {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .case-study-grid {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 24px;
+        }
+
+        .case-list {
+            margin-left: 18px;
+            color: var(--text-light);
+        }
+
+        .case-list li { margin: 8px 0; }
+
+        .case-media .media-card {
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--cream);
+        }
+
+        .case-image {
+            width: 100%;
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .small-note {
+            font-size: 0.85rem;
+            color: var(--text-lighter);
+            margin-top: 6px;
+        }
+
+        .doc-links {
+            margin-left: 18px;
+            color: var(--text-light);
+        }
+        .doc-links li { margin: 8px 0; }
+        .doc-links a { text-decoration: underline; }
+
+        .label {
+            font-size: 0.8rem;
+            color: var(--text-lighter);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .company {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        /* Architecture diagram inline */
+        .architecture-preview {
+            margin-top: 12px;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255, 253, 249, 0.6);
+        }
+
+        .architecture-preview img {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        /* Runbook preview box */
+        .runbook-preview {
+            margin-top: 16px;
+            padding: 16px;
+            background: #fafaf8;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: var(--text-light);
+            overflow-x: auto;
+        }
+
+        .runbook-preview code {
+            display: block;
+            white-space: pre;
+        }
+
         /* Responsive */
         @media (max-width: 900px) {
             nav {
@@ -661,7 +912,7 @@
             
             .skills-container {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 40px 32px;
+                gap: 16px;
             }
             
             .experience-item {
@@ -670,6 +921,10 @@
             }
             
             .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .case-study-grid {
                 grid-template-columns: 1fr;
             }
             
@@ -717,67 +972,12 @@
             .scroll-indicator {
                 display: none;
             }
+
+            .typing-text {
+                font-size: 1.8rem;
+            }
         }
-    /* Case Studies */
-.case-study {
-    margin-top: 48px;
-    padding: 28px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: rgba(255, 253, 249, 0.7);
-}
-
-.case-study-header h3 {
-    font-size: 1.2rem;
-    font-weight: 500;
-    margin-bottom: 4px;
-}
-
-.case-study-grid {
-    margin-top: 18px;
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 24px;
-}
-
-.case-list {
-    margin-left: 18px;
-    color: var(--text-light);
-}
-
-.case-list li { margin: 8px 0; }
-
-.case-media .media-card {
-    padding: 18px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: var(--cream);
-}
-
-.case-image {
-    width: 100%;
-    border-radius: 12px;
-    margin-top: 10px;
-    border: 1px solid var(--border);
-}
-
-.small-note {
-    font-size: 0.85rem;
-    color: var(--text-lighter);
-    margin-top: 6px;
-}
-
-.doc-links {
-    margin-left: 18px;
-    color: var(--text-light);
-}
-.doc-links li { margin: 8px 0; }
-.doc-links a { text-decoration: underline; }
-
-@media (max-width: 900px) {
-    .case-study-grid { grid-template-columns: 1fr; }
-}
-</style>
+    </style>
 </head>
 <body>
 
@@ -807,19 +1007,32 @@
             <a href="#skills">Skills</a>
             <a href="#experience">Experience</a>
             <a href="#projects">Work</a>
-                        <a href="#case-studies">Case Studies</a>
-<a href="#contact">Contact</a>
+            <a href="#case-studies">Case Studies</a>
+            <a href="#contact">Contact</a>
         </div>
     </nav>
 
     <main>
         <!-- Hero -->
         <section class="hero" id="about">
-            <p class="hero-label fade-in">Software Developer & Data Analyst</p>
-            <h1 class="fade-in fade-in-delay-1">Building software and <em>working with data</em> to solve real problems.</h1>
-            <p class="hero-description fade-in fade-in-delay-2">
+            <!-- Typing Effect -->
+            <div class="typing-container fade-in">
+                <span class="typing-text" id="typed-text"></span>
+                <span class="typing-cursor"></span>
+            </div>
+            
+            <p class="hero-label fade-in fade-in-delay-1">Software Developer & Data Analyst</p>
+            
+            <h1 class="fade-in fade-in-delay-2">
+                <span class="flow-text flow-left">Building software and</span> 
+                <em class="flow-text flow-right"><span>working with data</span></em> 
+                <span class="flow-text flow-left">to solve real problems.</span>
+            </h1>
+            
+            <p class="hero-description fade-in fade-in-delay-3">
                 Computer Science and Statistics student at the University of Alberta. Focused on simulation tools, forecasting models, and full-stack applications.
             </p>
+            
             <div class="hero-links fade-in fade-in-delay-3">
                 <a href="https://github.com/Andy12-byte" target="_blank">
                     <i class="fab fa-github"></i> GitHub
@@ -831,6 +1044,7 @@
                     <i class="fas fa-arrow-right"></i> Get in touch
                 </a>
             </div>
+            
             <div class="scroll-indicator">
                 <div class="scroll-line"></div>
                 <span>Scroll</span>
@@ -840,43 +1054,52 @@
         <!-- Skills -->
         <section id="skills">
             <div class="section-header fade-in">
-                <h2>Expertise</h2>
-                <span>What I work with</span>
+                <h2 class="flow-text flow-left">Expertise</h2>
+                <span class="flow-text flow-right">What I work with</span>
             </div>
             <div class="skills-container">
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>Languages</h3>
                     <p>Python, C#, JavaScript, TypeScript, SQL, R, Bash</p>
                 </div>
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>Frontend</h3>
                     <p>React, HTML, CSS, REST APIs, responsive design</p>
                 </div>
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>Backend</h3>
                     <p>Node.js, Express, FastAPI, PostgreSQL, MongoDB</p>
                 </div>
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>Data & Machine Learning</h3>
                     <p>Pandas, NumPy, PySpark, PyTorch, time-series forecasting</p>
                 </div>
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>DevOps & Cloud</h3>
                     <p>Docker, AWS, GitHub Actions, Nginx, Linux, CI/CD</p>
                 </div>
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>Tools & Platforms</h3>
                     <p>Git, Power BI, Databricks, Jira, Confluence</p>
                 </div>
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>Simulation</h3>
                     <p>SimPy, Monte Carlo methods, discrete-event simulation</p>
                 </div>
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>Business Intelligence</h3>
                     <p>Power BI, Excel (Power Query, PivotTables), dashboards</p>
                 </div>
-                <div class="skill-item fade-in">
+                <div class="glow-card skill-item fade-in">
+                    <div class="glow-border"></div>
                     <h3>Collaboration</h3>
                     <p>Agile workflows, code reviews, technical documentation</p>
                 </div>
@@ -886,32 +1109,32 @@
         <!-- Experience -->
         <section id="experience">
             <div class="section-header fade-in">
-                <h2>Experience</h2>
-                <span>Where I've worked</span>
+                <h2 class="flow-text flow-left">Experience</h2>
+                <span class="flow-text flow-right">Where I've worked</span>
             </div>
             <div class="experience-list">
                 <div class="experience-item fade-in">
-                    <div class="experience-date">2025 — Present</div>
+                    <div class="experience-date flow-text flow-left">2025 — Present</div>
                     <div class="experience-content">
-                        <h3>Data Analyst</h3>
-                        <p class="company">LP Pipeline Optimization · Student Project</p>
-                        <p>Built flow analysis models using Python and SQL. Processing datasets in Databricks with PySpark, automating ETL refreshes, and designing Power BI dashboards to track throughput and utilization KPIs.</p>
+                        <h3 class="flow-text flow-left">Data Analyst</h3>
+                        <p class="company flow-text flow-right">LP Pipeline Optimization · Student Project</p>
+                        <p class="flow-text flow-left">Built flow analysis models using Python and SQL. Processing datasets in Databricks with PySpark, automating ETL refreshes, and designing Power BI dashboards to track throughput and utilization KPIs.</p>
                     </div>
                 </div>
                 <div class="experience-item fade-in">
-                    <div class="experience-date">2024 — Present</div>
+                    <div class="experience-date flow-text flow-left">2024 — Present</div>
                     <div class="experience-content">
-                        <h3>Software Developer</h3>
-                        <p class="company">UAlberta Blueprint · Non-profit</p>
-                        <p>Building a full-stack web app using React and Node.js for a non-profit organization. Containerized the environment with Docker, set up CI/CD pipelines, and increased test coverage from 45% to 78%.</p>
+                        <h3 class="flow-text flow-left">Software Developer</h3>
+                        <p class="company flow-text flow-right">UAlberta Blueprint · Non-profit</p>
+                        <p class="flow-text flow-left">Building a full-stack web app using React and Node.js for a non-profit organization. Containerized the environment with Docker, set up CI/CD pipelines, and increased test coverage from 45% to 78%.</p>
                     </div>
                 </div>
                 <div class="experience-item fade-in">
-                    <div class="experience-date">2024 — Present</div>
+                    <div class="experience-date flow-text flow-left">2024 — Present</div>
                     <div class="experience-content">
-                        <h3>Data & ML Engineer</h3>
-                        <p class="company">Kaggle Competition · Top 4% Global</p>
-                        <p>Developed time-series forecasting models to predict sales trends. Engineered lag features and validated models for accuracy. Finished in the top 100 out of 2,800+ teams globally.</p>
+                        <h3 class="flow-text flow-left">Data & ML Engineer</h3>
+                        <p class="company flow-text flow-right">Kaggle Competition · Top 4% Global</p>
+                        <p class="flow-text flow-left">Developed time-series forecasting models to predict sales trends. Engineered lag features and validated models for accuracy. Finished in the top 100 out of 2,800+ teams globally.</p>
                     </div>
                 </div>
             </div>
@@ -920,11 +1143,12 @@
         <!-- Projects -->
         <section id="projects">
             <div class="section-header fade-in">
-                <h2>Selected Work</h2>
-                <span>Things I've built</span>
+                <h2 class="flow-text flow-left">Selected Work</h2>
+                <span class="flow-text flow-right">Things I've built</span>
             </div>
             <div class="projects-grid">
-                <a href="https://github.com/Andy12-byte/buildtwin" target="_blank" class="project-card fade-in">
+                <a href="https://github.com/Andy12-byte/buildtwin" target="_blank" class="glow-card project-card fade-in">
+                    <div class="glow-border"></div>
                     <div class="project-top">
                         <span class="project-number">01</span>
                         <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
@@ -939,7 +1163,8 @@
                     </div>
                 </a>
 
-                <a href="https://github.com/Andy12-byte/construction-digital-twin-sim" target="_blank" class="project-card fade-in">
+                <a href="https://github.com/Andy12-byte/construction-digital-twin-sim" target="_blank" class="glow-card project-card fade-in">
+                    <div class="glow-border"></div>
                     <div class="project-top">
                         <span class="project-number">02</span>
                         <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
@@ -953,7 +1178,8 @@
                     </div>
                 </a>
 
-                <a href="https://github.com/Andy12-byte/api-analytics-service" target="_blank" class="project-card fade-in">
+                <a href="https://github.com/Andy12-byte/api-analytics-service" target="_blank" class="glow-card project-card fade-in">
+                    <div class="glow-border"></div>
                     <div class="project-top">
                         <span class="project-number">03</span>
                         <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
@@ -967,7 +1193,8 @@
                     </div>
                 </a>
 
-                <a href="https://github.com/Andy12-byte/kaggle-sticker-sales-forecasting" target="_blank" class="project-card fade-in">
+                <a href="https://github.com/Andy12-byte/kaggle-sticker-sales-forecasting" target="_blank" class="glow-card project-card fade-in">
+                    <div class="glow-border"></div>
                     <div class="project-top">
                         <span class="project-number">04</span>
                         <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
@@ -981,7 +1208,8 @@
                     </div>
                 </a>
 
-                <a href="#event-registration" class="project-card fade-in">
+                <a href="#event-registration" class="glow-card project-card fade-in">
+                    <div class="glow-border"></div>
                     <div class="project-top">
                         <span class="project-number">05</span>
                         <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
@@ -995,7 +1223,8 @@
                     </div>
                 </a>
 
-                <a href="#pipeline-flow-analysis" class="project-card fade-in">
+                <a href="#pipeline-flow-analysis" class="glow-card project-card fade-in">
+                    <div class="glow-border"></div>
                     <div class="project-top">
                         <span class="project-number">06</span>
                         <span class="project-link">View <i class="fas fa-arrow-right"></i></span>
@@ -1011,128 +1240,213 @@
             </div>
         </section>
 
-
-<!-- Case Studies & Documentation -->
-<section id="case-studies">
-    <div class="section-header fade-in">
-        <h2>Case Studies</h2>
-        <span>Reporting, documentation, and delivery</span>
-    </div>
-
-    <div class="case-study fade-in" id="pipeline-flow-analysis">
-        <div class="case-study-header">
-            <h3>Pipeline Flow Analysis (Student Project)</h3>
-            <p class="company">Python · SQL · Databricks · Power BI</p>
-        </div>
-
-        <div class="case-study-grid">
-            <div>
-                <p class="label">What it was</p>
-                <p>
-                    A throughput and constraint analysis project where the goal was to make performance questions easier to answer
-                    with consistent metrics and a repeatable reporting workflow.
-                </p>
-
-                <p class="label" style="margin-top: 18px;">What I did</p>
-                <ul class="case-list">
-                    <li>Defined a simple KPI set (throughput, available capacity, utilization) and kept definitions in a data dictionary.</li>
-                    <li>Aggregated monthly flows by key point (example shown: <strong>ex‑Gretna</strong>) and built a repeatable refresh workflow in Python/SQL.</li>
-                    <li>Produced a monthly scorecard (last 24 months) and a one‑page chart for quick stakeholder updates.</li>
-                    <li>Wrote lightweight runbook notes (inputs, outputs, and checks) so the reporting could be picked up by someone else.</li>
-                </ul>
-
-                <p class="label" style="margin-top: 18px;">Outcome</p>
-                <p>
-                    Reporting became more consistent and easier to review. The workflow reduced manual refresh steps and made it
-                    simpler to spot data issues and explain KPI movement.
-                </p>
+        <!-- Case Studies & Documentation -->
+        <section id="case-studies">
+            <div class="section-header fade-in">
+                <h2 class="flow-text flow-left">Case Studies</h2>
+                <span class="flow-text flow-right">Reporting, documentation, and delivery</span>
             </div>
 
-            <div class="case-media">
-                <div class="media-card">
-                    <p class="label">Public data snapshot</p>
-                    <p class="small-note">
-                        Chart built from <a href="assets/enbridge-mainline-throughput-and-capacity.csv" target="_blank">CER open data</a>
-                        for the Enbridge Canadian Mainline (key point: ex‑Gretna). Used here as a portfolio demo.
-                    </p>
-                    <img class="case-image" src="assets/enbridge_mainline_throughput_capacity.png" alt="Throughput vs capacity chart (CER open data)">
-                    <p class="small-note" style="margin-top: 10px;">
-                        Background photo (CC0): <a href="https://commons.wikimedia.org/wiki/File:Oil_pipeline.jpg" target="_blank">Wikimedia Commons</a>.
-                    </p>
-                    <img class="case-image" src="assets/oil_pipeline_photo.jpg" alt="Pipeline construction photo">
+            <div class="glow-card case-study fade-in" id="pipeline-flow-analysis">
+                <div class="glow-border"></div>
+                <div class="case-study-header">
+                    <h3>Pipeline Flow Analysis (Student Project)</h3>
+                    <p class="company">Python · SQL · Databricks · Power BI</p>
                 </div>
 
-                <div class="media-card" style="margin-top: 18px;">
-                    <p class="label">Reporting & documentation samples</p>
-                    <ul class="doc-links">
-                        <li><a href="assets/data-dictionary-sample.csv" target="_blank">Data dictionary sample (CSV)</a></li>
-                        <li><a href="assets/oil-pipeline-data-dictionary.csv" target="_blank">CER oil pipeline data dictionary (CSV)</a></li>
-                        <li><a href="assets/monthly-scorecard-example.csv" target="_blank">Monthly scorecard example (CSV)</a></li>
-                        <li><a href="assets/monthly-scorecard-template.xlsx" target="_blank">Monthly scorecard template (Excel)</a></li>
-                        <li><a href="assets/runbook-sample.md" target="_blank">Runbook / refresh steps (Markdown)</a></li>
-                    </ul>
+                <div class="case-study-grid">
+                    <div>
+                        <p class="label">What it was</p>
+                        <p class="flow-text flow-left">
+                            A throughput and constraint analysis project where the goal was to make performance questions easier to answer
+                            with consistent metrics and a repeatable reporting workflow.
+                        </p>
+
+                        <p class="label" style="margin-top: 18px;">What I did</p>
+                        <ul class="case-list">
+                            <li class="flow-text flow-left">Defined a simple KPI set (throughput, available capacity, utilization) and kept definitions in a data dictionary.</li>
+                            <li class="flow-text flow-left">Aggregated monthly flows by key point (example shown: <strong>ex‑Gretna</strong>) and built a repeatable refresh workflow in Python/SQL.</li>
+                            <li class="flow-text flow-left">Produced a monthly scorecard (last 24 months) and a one‑page chart for quick stakeholder updates.</li>
+                            <li class="flow-text flow-left">Wrote lightweight runbook notes (inputs, outputs, and checks) so the reporting could be picked up by someone else.</li>
+                        </ul>
+
+                        <p class="label" style="margin-top: 18px;">Outcome</p>
+                        <p class="flow-text flow-left">
+                            Reporting became more consistent and easier to review. The workflow reduced manual refresh steps and made it
+                            simpler to spot data issues and explain KPI movement.
+                        </p>
+                    </div>
+
+                    <div class="case-media">
+                        <div class="media-card">
+                            <p class="label">Public data snapshot</p>
+                            <p class="small-note">
+                                Chart built from <a href="assets/enbridge-mainline-throughput-and-capacity.csv" target="_blank">CER open data</a>
+                                for the Enbridge Canadian Mainline (key point: ex‑Gretna). Used here as a portfolio demo.
+                            </p>
+                            <img class="case-image" src="assets/enbridge_mainline_throughput_capacity.png" alt="Throughput vs capacity chart (CER open data)">
+                            <p class="small-note" style="margin-top: 10px;">
+                                Background photo (CC0): <a href="https://commons.wikimedia.org/wiki/File:Oil_pipeline.jpg" target="_blank">Wikimedia Commons</a>.
+                            </p>
+                            <img class="case-image" src="assets/oil_pipeline_photo.jpg" alt="Pipeline construction photo">
+                        </div>
+
+                        <div class="media-card" style="margin-top: 18px;">
+                            <p class="label">Reporting & documentation samples</p>
+                            <ul class="doc-links">
+                                <li><a href="assets/data-dictionary-sample.csv" target="_blank">Data dictionary sample (CSV)</a></li>
+                                <li><a href="assets/oil-pipeline-data-dictionary.csv" target="_blank">CER oil pipeline data dictionary (CSV)</a></li>
+                                <li><a href="assets/monthly-scorecard-example.csv" target="_blank">Monthly scorecard example (CSV)</a></li>
+                                <li><a href="assets/monthly-scorecard-template.xlsx" target="_blank">Monthly scorecard template (Excel)</a></li>
+                                <li><a href="assets/runbook-sample.md" target="_blank">Runbook / refresh steps (Markdown)</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="case-study fade-in" id="event-registration">
-        <div class="case-study-header">
-            <h3>Event Registration Service (Club Project)</h3>
-            <p class="company">Node.js · MongoDB · AWS Lightsail · Nginx · PM2</p>
-        </div>
+            <div class="glow-card case-study fade-in" id="event-registration">
+                <div class="glow-border"></div>
+                <div class="case-study-header">
+                    <h3>Event Registration Service (Club Project)</h3>
+                    <p class="company">Node.js · MongoDB · AWS Lightsail · Nginx · PM2</p>
+                </div>
 
-        <div class="case-study-grid">
-            <div>
-                <p class="label">What it was</p>
-                <p>
-                    A small service for event signups and waitlists used across multiple student events. The focus was reliability:
-                    no lost records, clear run steps, and quick recovery if something breaks.
-                </p>
+                <div class="case-study-grid">
+                    <div>
+                        <p class="label">What it was</p>
+                        <p class="flow-text flow-left">
+                            A small service for event signups and waitlists used across multiple student events. The focus was reliability:
+                            no lost records, clear run steps, and quick recovery if something breaks.
+                        </p>
 
-                <p class="label" style="margin-top: 18px;">What I did</p>
-                <ul class="case-list">
-                    <li>Built the API and database workflow for registrations and waitlists.</li>
-                    <li>Deployed on AWS Lightsail with Nginx and PM2.</li>
-                    <li>Wrote basic health checks and a short runbook so teammates could operate it without deep DevOps experience.</li>
-                </ul>
+                        <p class="label" style="margin-top: 18px;">What I did</p>
+                        <ul class="case-list">
+                            <li class="flow-text flow-left">Built the API and database workflow for registrations and waitlists.</li>
+                            <li class="flow-text flow-left">Deployed on AWS Lightsail with Nginx as a reverse proxy and PM2 for process management.</li>
+                            <li class="flow-text flow-left">Added request validation and duplicate-email checks to prevent bad data.</li>
+                            <li class="flow-text flow-left">Wrote basic health checks and a short runbook so teammates could operate it without deep DevOps experience.</li>
+                        </ul>
 
-                <p class="label" style="margin-top: 18px;">Outcome</p>
-                <p>
-                    Supported 1,200+ registrations with stable operation and clear handoff documentation.
-                </p>
-            </div>
+                        <p class="label" style="margin-top: 18px;">Outcome</p>
+                        <p class="flow-text flow-left">
+                            Supported 1,200+ registrations across 3 events with stable operation. Handed off to the next dev team with full documentation.
+                        </p>
+                    </div>
 
-            <div class="case-media">
-                <div class="media-card">
-                    <p class="label">Docs</p>
-<ul class="doc-links">
-  <li><a href="assets/event-service-overview.md" target="_blank">1-page system overview (Markdown)</a></li>
-  <li><a href="assets/event-registration-runbook.md" target="_blank">Runbook (start/stop + health checks)</a></li>
-  <li><a href="assets/event-architecture.svg" target="_blank">Architecture diagram (SVG)</a></li>
-</ul>
+                    <div class="case-media">
+                        <div class="media-card">
+                            <p class="label">Documentation</p>
+                            <ul class="doc-links">
+                                <li><a href="assets/event-service-overview.md" target="_blank">1-page system overview (Markdown)</a></li>
+                                <li><a href="assets/event-registration-runbook.md" target="_blank">Runbook (start/stop + health checks)</a></li>
+                                <li><a href="assets/event-architecture.svg" target="_blank">Architecture diagram (SVG)</a></li>
+                            </ul>
+                            
+                            <div class="architecture-preview">
+                                <p class="small-note" style="margin: 0 0 10px 0;">
+                                    System architecture (kept minimal for quick onboarding):
+                                </p>
+                                <!-- Inline SVG Architecture Diagram -->
+                                <svg viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:460px; font-family: Inter, sans-serif;">
+                                    <!-- Background -->
+                                    <rect fill="#fafaf8" width="480" height="200" rx="8"/>
+                                    
+                                    <!-- Client -->
+                                    <rect x="20" y="75" width="80" height="50" rx="6" fill="#f5f2ed" stroke="#c5bfb6" stroke-width="1"/>
+                                    <text x="60" y="102" text-anchor="middle" fill="#5a5a5a" font-size="11" font-weight="500">Browser</text>
+                                    <text x="60" y="115" text-anchor="middle" fill="#8a8a8a" font-size="9">(React form)</text>
+                                    
+                                    <!-- Arrow 1 -->
+                                    <line x1="100" y1="100" x2="140" y2="100" stroke="#c5bfb6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                                    <text x="120" y="90" text-anchor="middle" fill="#8a8a8a" font-size="8">HTTPS</text>
+                                    
+                                    <!-- Nginx -->
+                                    <rect x="145" y="75" width="70" height="50" rx="6" fill="#e8ddd0" stroke="#c5bfb6" stroke-width="1"/>
+                                    <text x="180" y="102" text-anchor="middle" fill="#5a5a5a" font-size="11" font-weight="500">Nginx</text>
+                                    <text x="180" y="115" text-anchor="middle" fill="#8a8a8a" font-size="9">:443 → :3000</text>
+                                    
+                                    <!-- Arrow 2 -->
+                                    <line x1="215" y1="100" x2="255" y2="100" stroke="#c5bfb6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                                    
+                                    <!-- Node/PM2 -->
+                                    <rect x="260" y="65" width="90" height="70" rx="6" fill="#dfe8db" stroke="#c5bfb6" stroke-width="1"/>
+                                    <text x="305" y="90" text-anchor="middle" fill="#5a5a5a" font-size="11" font-weight="500">Node.js</text>
+                                    <text x="305" y="103" text-anchor="middle" fill="#8a8a8a" font-size="9">(Express API)</text>
+                                    <text x="305" y="125" text-anchor="middle" fill="#8a8a8a" font-size="8">managed by PM2</text>
+                                    
+                                    <!-- Arrow 3 -->
+                                    <line x1="350" y1="100" x2="390" y2="100" stroke="#c5bfb6" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+                                    
+                                    <!-- MongoDB -->
+                                    <rect x="395" y="75" width="70" height="50" rx="6" fill="#f5ebe0" stroke="#c5bfb6" stroke-width="1"/>
+                                    <text x="430" y="102" text-anchor="middle" fill="#5a5a5a" font-size="11" font-weight="500">MongoDB</text>
+                                    <text x="430" y="115" text-anchor="middle" fill="#8a8a8a" font-size="9">Atlas</text>
+                                    
+                                    <!-- AWS Label -->
+                                    <rect x="135" y="150" width="225" height="24" rx="4" fill="none" stroke="#c5bfb6" stroke-width="1" stroke-dasharray="4"/>
+                                    <text x="247" y="166" text-anchor="middle" fill="#8a8a8a" font-size="9">AWS Lightsail (Ubuntu 22.04)</text>
+                                    
+                                    <!-- Title -->
+                                    <text x="240" y="25" text-anchor="middle" fill="#2c2c2c" font-size="12" font-weight="500">Event Registration — System Diagram</text>
+                                    
+                                    <!-- Arrow marker -->
+                                    <defs>
+                                        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+                                            <polygon points="0 0, 8 3, 0 6" fill="#c5bfb6"/>
+                                        </marker>
+                                    </defs>
+                                </svg>
+                            </div>
+                        </div>
 
-<div style="margin-top: 12px; border: 1px solid var(--border); border-radius: 14px; background: rgba(255,253,249,0.6); padding: 14px;">
-  <p class="small-note" style="margin: 0 0 10px 0;">
-    Simple architecture diagram (kept lightweight on purpose — easy to scan).
-  </p>
-  <img class="case-image" src="assets/event-architecture.svg" alt="Event registration architecture diagram">
-</div>
+                        <div class="media-card" style="margin-top: 16px;">
+                            <p class="label">Runbook snippet</p>
+                            <p class="small-note">Quick reference kept in the repo README:</p>
+                            <div class="runbook-preview">
+<code># Event Registration Service — Quick Ops
 
-<p class="small-note" style="margin-top: 10px;">
-  
-</p>
+## Start / Stop
+pm2 start ecosystem.config.js     # start all processes
+pm2 stop event-api                # stop the API
+pm2 restart event-api             # restart after config change
+pm2 logs event-api --lines 50    # tail recent logs
+
+## Health Check
+curl -s http://localhost:3000/health | jq .
+# Expected: {"status":"ok","db":"connected","uptime":...}
+
+## MongoDB backup (daily cron)
+mongodump --uri="$MONGO_URI" --out=/backups/$(date +%F)
+
+## Common issues
+- 502 Bad Gateway → check if PM2 process is running
+- Connection timeout → verify MongoDB Atlas IP whitelist
+- Duplicate entries → check validation middleware logs</code>
+                            </div>
+                        </div>
+
+                        <div class="media-card" style="margin-top: 16px;">
+                            <p class="label">API endpoints (summary)</p>
+                            <div class="runbook-preview">
+<code>POST   /api/register       → Create new registration
+GET    /api/register/:id   → Get registration by ID
+GET    /api/events         → List all events
+GET    /api/events/:id/attendees  → Export attendee list
+POST   /api/waitlist       → Add to waitlist
+GET    /health             → Service health status</code>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
+        </section>
 
         <!-- Contact -->
         <section id="contact" class="contact-section">
             <p class="label fade-in">Get in touch</p>
-            <h2 class="fade-in">Let's <em>work together</em></h2>
-            <p class="fade-in">I'm looking for internship opportunities in software engineering, data analytics, or simulation. Feel free to reach out.</p>
+            <h2 class="fade-in"><span class="flow-text flow-left">Let's</span> <em class="flow-text flow-right">work together</em></h2>
+            <p class="fade-in flow-text flow-left">I'm looking for internship opportunities in software engineering, data analytics, or simulation. Feel free to reach out.</p>
             <a href="mailto:jingch10@ualberta.ca" class="contact-email fade-in">jingch10@ualberta.ca</a>
             <div class="social-links fade-in">
                 <a href="https://www.linkedin.com/in/andy-wang-93369a2bb" target="_blank">
@@ -1152,6 +1466,41 @@
     </footer>
 
     <script>
+        // Typing Effect
+        const typingTexts = ["Hi, I'm Andy.", "Welcome to my portfolio.", "Let's build something."];
+        let textIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typedElement = document.getElementById('typed-text');
+        
+        function typeEffect() {
+            const currentText = typingTexts[textIndex];
+            
+            if (isDeleting) {
+                typedElement.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typedElement.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            let typeSpeed = isDeleting ? 50 : 100;
+            
+            if (!isDeleting && charIndex === currentText.length) {
+                typeSpeed = 2000; // Pause at end
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % typingTexts.length;
+                typeSpeed = 500; // Pause before new text
+            }
+            
+            setTimeout(typeEffect, typeSpeed);
+        }
+        
+        // Start typing after page load
+        setTimeout(typeEffect, 1000);
+
         // Navbar background on scroll
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
@@ -1174,7 +1523,6 @@
                 const amplitude = 30 + index * 10;
                 const frequency = 0.8 + index * 0.1;
                 
-                // Generate smooth wave path
                 let d = `M-100,${200 + index * 180}`;
                 for (let x = -100; x <= 1600; x += 100) {
                     const y = (200 + index * 180) + 
@@ -1189,23 +1537,42 @@
         }
         animateLines();
 
-        // Fade in on scroll
-        const fadeElements = document.querySelectorAll('.fade-in');
+        // Scroll-triggered animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -60px 0px'
+        };
 
-        const observer = new IntersectionObserver((entries) => {
+        // Fade in observer
+        const fadeObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
                 }
             });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+        // Flow text observer (left-right animations)
+        const flowObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Add staggered delay based on position
+                    const siblings = Array.from(entry.target.parentElement.querySelectorAll('.flow-text'));
+                    const index = siblings.indexOf(entry.target);
+                    entry.target.style.transitionDelay = `${index * 0.1}s`;
+                    entry.target.classList.add('visible');
+                }
+            });
         }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -60px 0px'
+            threshold: 0.2,
+            rootMargin: '0px 0px -40px 0px'
         });
 
-        fadeElements.forEach(el => observer.observe(el));
+        document.querySelectorAll('.flow-text').forEach(el => flowObserver.observe(el));
 
-        // Smooth scroll
+        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1232,6 +1599,65 @@
                 orb.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
             });
         });
+
+        // Enhanced glow border animation on mouse move
+        document.querySelectorAll('.glow-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const glowBorder = card.querySelector('.glow-border');
+                if (glowBorder) {
+                    glowBorder.style.setProperty('--mouse-x', `${x}px`);
+                    glowBorder.style.setProperty('--mouse-y', `${y}px`);
+                }
+            });
+        });
+
+        // Update glow position on mouse move for interactive effect
+        document.querySelectorAll('.glow-card').forEach(card => {
+            const glowBorder = card.querySelector('.glow-border');
+            if (!glowBorder) return;
+            
+            card.addEventListener('mouseenter', () => {
+                glowBorder.style.opacity = '1';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                glowBorder.style.opacity = '0';
+            });
+            
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left - 100;
+                const y = e.clientY - rect.top - 100;
+                
+                const glow = glowBorder.querySelector('::before') || glowBorder;
+                glowBorder.style.background = `radial-gradient(200px circle at ${e.clientX - rect.left}px ${e.clientY - rect.top}px, rgba(180, 160, 140, 0.15), transparent 50%)`;
+            });
+        });
+
+        // Word-by-word reveal for hero description
+        const heroDescription = document.querySelector('.hero-description');
+        if (heroDescription) {
+            const words = heroDescription.textContent.split(' ');
+            heroDescription.innerHTML = words.map((word, i) => 
+                `<span class="word-animate" style="transition-delay: ${i * 0.05}s">${word}</span>`
+            ).join(' ');
+            
+            const wordObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.querySelectorAll('.word-animate').forEach(word => {
+                            word.classList.add('visible');
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            wordObserver.observe(heroDescription);
+        }
     </script>
 </body>
 </html>
